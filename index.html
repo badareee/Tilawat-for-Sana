@@ -99,8 +99,6 @@
     font-weight: 300;
   }
 
-  .btn-group { display: flex; flex-direction: column; gap: 12px; }
-
   .btn {
     display: flex;
     align-items: center;
@@ -118,26 +116,12 @@
     transition: all 0.25s ease;
     border: none;
     outline: none;
-  }
-
-  .btn-primary {
-    background: rgba(139,92,246,0.15);
-    border: 1px solid rgba(139,92,246,0.3);
-    color: #c4b5fd;
-  }
-  .btn-primary:hover {
-    background: rgba(139,92,246,0.25);
-    border-color: rgba(139,92,246,0.55);
-    color: #ede9fe;
-    transform: translateY(-2px);
-  }
-
-  .btn-secondary {
     background: rgba(14,165,233,0.1);
     border: 1px solid rgba(14,165,233,0.2);
     color: #7dd3fc;
   }
-  .btn-secondary:hover {
+
+  .btn:hover {
     background: rgba(14,165,233,0.18);
     border-color: rgba(14,165,233,0.45);
     color: #e0f2fe;
@@ -183,34 +167,21 @@
 <div class="card">
   <div class="icon-wrap">
     <svg viewBox="0 0 24 24">
-      <path d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+      <path d="M9 18V5l12-2v13M9 18c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/>
     </svg>
   </div>
 
   <h1>Tilawat</h1>
   <p class="subtitle">Quran Recitation</p>
 
-  <div class="btn-group">
-
-    <a class="btn btn-primary"
-       href="https://ia600403.us.archive.org/0/items/Tilawat-Sana/Tilawat.mp4"
-       download="Tilawat.mp4">
-      <svg viewBox="0 0 24 24">
-        <path d="M15 10l-4 4-4-4m4 4V3M3 17v2a2 2 0 002 2h14a2 2 0 002-2v-2"/>
-      </svg>
-      Download Video
-    </a>
-
-    <a class="btn btn-secondary"
-       href="https://ia600403.us.archive.org/0/items/Tilawat-Sana/Tilawat.mp4"
-       download="Tilawat.mp4">
-      <svg viewBox="0 0 24 24">
-        <path d="M9 18V5l12-2v13M9 18c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/>
-      </svg>
-      Download Audio
-    </a>
-
-  </div>
+  <a class="btn"
+     href="Tilawat.mp3"
+     download="Tilawat.mp3">
+    <svg viewBox="0 0 24 24">
+      <path d="M15 10l-4 4-4-4m4 4V3M3 17v2a2 2 0 002 2h14a2 2 0 002-2v-2"/>
+    </svg>
+    Download Audio
+  </a>
 
   <div class="divider"></div>
   <p class="status"><span class="dot"></span>Ready to download</p>
