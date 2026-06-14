@@ -18,7 +18,6 @@
     overflow: hidden;
   }
 
-  /* Ambient orbs */
   body::before, body::after {
     content: '';
     position: fixed;
@@ -52,7 +51,6 @@
     text-align: center;
   }
 
-  /* Subtle top glow line */
   .card::before {
     content: '';
     position: absolute;
@@ -76,8 +74,7 @@
   }
 
   .icon-wrap svg {
-    width: 26px;
-    height: 26px;
+    width: 26px; height: 26px;
     stroke: #a78bfa;
     fill: none;
     stroke-width: 1.5;
@@ -103,11 +100,7 @@
     font-weight: 300;
   }
 
-  .btn-group {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+  .btn-group { display: flex; flex-direction: column; gap: 12px; }
 
   .btn {
     display: flex;
@@ -185,17 +178,7 @@
     top: -1px;
   }
 
-  /* Loading state */
   .btn.loading { opacity: 0.6; pointer-events: none; }
-  .btn.loading .btn-text::after {
-    content: '...';
-    animation: dots 1s infinite;
-  }
-  @keyframes dots {
-    0%,100% { content: '...'; }
-    33% { content: '.'; }
-    66% { content: '..'; }
-  }
 </style>
 </head>
 <body>
@@ -211,65 +194,26 @@
   <p class="subtitle">Quran Recitation</p>
 
   <div class="btn-group">
-    <a class="btn btn-primary" href="lv_0_20260614111031.mp4" download>
+
+    <a class="btn btn-primary" href="https://archive.org/download/Tilawat-Sana/lv_0_20260614111031.mp4" download="Tilawat.mp4" target="_blank">
       <svg viewBox="0 0 24 24">
         <path d="M15 10l-4 4-4-4m4 4V3M3 17v2a2 2 0 002 2h14a2 2 0 002-2v-2"/>
       </svg>
       <span class="btn-text">Download Video</span>
     </a>
 
-    <button class="btn btn-secondary" onclick="extractAudio(this)">
+    <a class="btn btn-secondary" href="https://archive.org/download/Tilawat-Sana/lv_0_20260614111031.mp4" download="Tilawat-audio.mp4" target="_blank" id="audioBtn">
       <svg viewBox="0 0 24 24">
         <path d="M9 18V5l12-2v13M9 18c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/>
       </svg>
       <span class="btn-text">Download Audio</span>
-    </button>
+    </a>
+
   </div>
 
   <div class="divider"></div>
   <p class="status"><span class="dot"></span>Ready to download</p>
 </div>
 
-<script>
-async function extractAudio(btn) {
-  btn.classList.add('loading');
-  btn.querySelector('.btn-text').textContent = 'Extracting';
-
-  try {
-    const video = document.createElement('video');
-    video.src = 'lv_0_20260614111031.mp4';
-    video.crossOrigin = 'anonymous';
-
-    const stream = video.captureStream();
-    const audioTrack = stream.getAudioTracks()[0];
-    if (!audioTrack) throw new Error('No audio track found');
-
-    const audioStream = new MediaStream([audioTrack]);
-    const rec = new MediaRecorder(audioStream);
-    const chunks = [];
-
-    rec.ondataavailable = e => chunks.push(e.data);
-    rec.onstop = () => {
-      const blob = new Blob(chunks, { type: 'audio/webm' });
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'Tilawat.webm';
-      a.click();
-      URL.revokeObjectURL(a.href);
-
-      btn.classList.remove('loading');
-      btn.querySelector('.btn-text').textContent = 'Download Audio';
-    };
-
-    rec.start();
-    video.play();
-    video.onended = () => rec.stop();
-  } catch (err) {
-    btn.classList.remove('loading');
-    btn.querySelector('.btn-text').textContent = 'Download Audio';
-    alert('Could not extract audio: ' + err.message);
-  }
-}
-</script>
 </body>
 </html>
