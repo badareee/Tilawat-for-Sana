@@ -120,8 +120,6 @@
     outline: none;
   }
 
-  .btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
-
   .btn-primary {
     background: rgba(139,92,246,0.15);
     border: 1px solid rgba(139,92,246,0.3);
@@ -139,7 +137,7 @@
     border: 1px solid rgba(14,165,233,0.2);
     color: #7dd3fc;
   }
-  .btn-secondary:hover:not(:disabled) {
+  .btn-secondary:hover {
     background: rgba(14,165,233,0.18);
     border-color: rgba(14,165,233,0.45);
     color: #e0f2fe;
@@ -195,7 +193,7 @@
   <div class="btn-group">
 
     <a class="btn btn-primary"
-       href="https://archive.org/download/Tilawat-Sana/Tilawat.mp4"
+       href="https://ia600403.us.archive.org/0/items/Tilawat-Sana/Tilawat.mp4"
        download="Tilawat.mp4">
       <svg viewBox="0 0 24 24">
         <path d="M15 10l-4 4-4-4m4 4V3M3 17v2a2 2 0 002 2h14a2 2 0 002-2v-2"/>
@@ -203,48 +201,20 @@
       Download Video
     </a>
 
-    <button class="btn btn-secondary" onclick="downloadAudio(this)">
+    <a class="btn btn-secondary"
+       href="https://ia600403.us.archive.org/0/items/Tilawat-Sana/Tilawat.mp4"
+       download="Tilawat.mp4">
       <svg viewBox="0 0 24 24">
         <path d="M9 18V5l12-2v13M9 18c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/>
       </svg>
-      <span id="audioLabel">Download Audio</span>
-    </button>
+      Download Audio
+    </a>
 
   </div>
 
   <div class="divider"></div>
-  <p class="status"><span class="dot"></span><span id="statusText">Ready to download</span></p>
+  <p class="status"><span class="dot"></span>Ready to download</p>
 </div>
-
-<script>
-  const FILE_URL = "https://archive.org/download/Tilawat-Sana/Tilawat.mp4";
-
-  async function downloadAudio(btn) {
-    btn.disabled = true;
-    document.getElementById('audioLabel').textContent = 'Downloading...';
-    document.getElementById('statusText').textContent = 'Please wait, this may take a moment';
-
-    try {
-      const res = await fetch(FILE_URL);
-      if (!res.ok) throw new Error('File not available yet, try again soon');
-
-      const blob = await res.blob();
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = 'Tilawat.mp4';
-      a.click();
-      URL.revokeObjectURL(a.href);
-
-      document.getElementById('audioLabel').textContent = 'Download Audio';
-      document.getElementById('statusText').textContent = 'Done!';
-    } catch (err) {
-      document.getElementById('audioLabel').textContent = 'Download Audio';
-      document.getElementById('statusText').textContent = err.message;
-    }
-
-    btn.disabled = false;
-  }
-</script>
 
 </body>
 </html>
