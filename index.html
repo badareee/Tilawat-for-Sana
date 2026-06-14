@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tilawat</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Inter:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0f;
+    font-family: 'Inter', sans-serif;
+    overflow: hidden;
+  }
+
+  /* Ambient orbs */
+  body::before, body::after {
+    content: '';
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.18;
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::before {
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, #4f46e5, #7c3aed);
+    top: -120px; left: -100px;
+  }
+  body::after {
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, #0ea5e9, #06b6d4);
+    bottom: -100px; right: -80px;
+  }
+
+  .card {
+    position: relative;
+    z-index: 1;
+    width: 340px;
+    padding: 56px 40px 44px;
+    border-radius: 28px;
+    background: rgba(255,255,255,0.035);
+    border: 1px solid rgba(255,255,255,0.08);
+    backdrop-filter: blur(32px);
+    -webkit-backdrop-filter: blur(32px);
+    text-align: center;
+  }
+
+  /* Subtle top glow line */
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(139,92,246,0.6), transparent);
+  }
+
+  .icon-wrap {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 28px;
+    border-radius: 16px;
+    background: rgba(139,92,246,0.12);
+    border: 1px solid rgba(139,92,246,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .icon-wrap svg {
+    width: 26px;
+    height: 26px;
+    stroke: #a78bfa;
+    fill: none;
+    stroke-width: 1.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 36px;
+    font-weight: 300;
+    letter-spacing: 0.12em;
+    color: #f1f0ff;
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    font-size: 12px;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.28);
+    margin-bottom: 40px;
+    font-weight: 300;
+  }
+
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px 20px;
+    border-radius: 14px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    border: none;
+    outline: none;
+  }
+
+  .btn-primary {
+    background: rgba(139,92,246,0.15);
+    border: 1px solid rgba(139,92,246,0.3);
+    color: #c4b5fd;
+  }
+  .btn-primary:hover {
+    background: rgba(139,92,246,0.25);
+    border-color: rgba(139,92,246,0.55);
+    color: #ede9fe;
+    transform: translateY(-2px);
+  }
+
+  .btn-secondary {
+    background: rgba(14,165,233,0.1);
+    border: 1px solid rgba(14,165,233,0.2);
+    color: #7dd3fc;
+  }
+  .btn-secondary:hover {
+    background: rgba(14,165,233,0.18);
+    border-color: rgba(14,165,233,0.45);
+    color: #e0f2fe;
+    transform: translateY(-2px);
+  }
+
+  .btn svg {
+    width: 16px; height: 16px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    flex-shrink: 0;
+  }
+
+  .divider {
+    height: 1px;
+    background: rgba(255,255,255,0.05);
+    margin: 32px 0 24px;
+  }
+
+  .status {
+    font-size: 11px;
+    color: rgba(255,255,255,0.18);
+    letter-spacing: 0.1em;
+  }
+
+  .dot {
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: rgba(139,92,246,0.5);
+    margin-right: 6px;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
+  }
+
+  /* Loading state */
+  .btn.loading { opacity: 0.6; pointer-events: none; }
+  .btn.loading .btn-text::after {
+    content: '...';
+    animation: dots 1s infinite;
+  }
+  @keyframes dots {
+    0%,100% { content: '...'; }
+    33% { content: '.'; }
+    66% { content: '..'; }
+  }
+</style>
+</head>
+<body>
+
+<div class="card">
+  <div class="icon-wrap">
+    <svg viewBox="0 0 24 24">
+      <path d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3"/>
+    </svg>
+  </div>
+
+  <h1>Tilawat</h1>
+  <p class="subtitle">Quran Recitation</p>
+
+  <div class="btn-group">
+    <a class="btn btn-primary" href="lv_0_20260614111031.mp4" download>
+      <svg viewBox="0 0 24 24">
+        <path d="M15 10l-4 4-4-4m4 4V3M3 17v2a2 2 0 002 2h14a2 2 0 002-2v-2"/>
+      </svg>
+      <span class="btn-text">Download Video</span>
+    </a>
+
+    <button class="btn btn-secondary" onclick="extractAudio(this)">
+      <svg viewBox="0 0 24 24">
+        <path d="M9 18V5l12-2v13M9 18c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2z"/>
+      </svg>
+      <span class="btn-text">Download Audio</span>
+    </button>
+  </div>
+
+  <div class="divider"></div>
+  <p class="status"><span class="dot"></span>Ready to download</p>
+</div>
+
+<script>
+async function extractAudio(btn) {
+  btn.classList.add('loading');
+  btn.querySelector('.btn-text').textContent = 'Extracting';
+
+  try {
+    const video = document.createElement('video');
+    video.src = 'lv_0_20260614111031.mp4';
+    video.crossOrigin = 'anonymous';
+
+    const stream = video.captureStream();
+    const audioTrack = stream.getAudioTracks()[0];
+    if (!audioTrack) throw new Error('No audio track found');
+
+    const audioStream = new MediaStream([audioTrack]);
+    const rec = new MediaRecorder(audioStream);
+    const chunks = [];
+
+    rec.ondataavailable = e => chunks.push(e.data);
+    rec.onstop = () => {
+      const blob = new Blob(chunks, { type: 'audio/webm' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'Tilawat.webm';
+      a.click();
+      URL.revokeObjectURL(a.href);
+
+      btn.classList.remove('loading');
+      btn.querySelector('.btn-text').textContent = 'Download Audio';
+    };
+
+    rec.start();
+    video.play();
+    video.onended = () => rec.stop();
+  } catch (err) {
+    btn.classList.remove('loading');
+    btn.querySelector('.btn-text').textContent = 'Download Audio';
+    alert('Could not extract audio: ' + err.message);
+  }
+}
+</script>
+</body>
+</html>
